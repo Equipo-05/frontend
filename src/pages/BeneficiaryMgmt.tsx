@@ -32,7 +32,7 @@ export default function BeneficiaryMgmt() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:8086/api/v1/users', {
+      const response = await fetch('http://localhost:8086/api/v2/users', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
