@@ -8,7 +8,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
@@ -20,9 +20,11 @@ export default function Login() {
         body: JSON.stringify({ dni, password }),
       });
 
-      if (!response.ok) throw new Error('Invalid credentials');
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid credentials');
+      }
       
       localStorage.setItem('sas_token', data.token);
       localStorage.setItem('sas_user', JSON.stringify({
@@ -37,8 +39,8 @@ export default function Login() {
         navigate('/dashboard');
       }
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Connection failed');
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +56,7 @@ export default function Login() {
         
         <form onSubmit={handleLogin} className="space-y-6">
           {error && (
-            <div className="text-[#93000a] text-center text-sm p-3 bg-[#ffdad6] rounded-md font-bold">
+            <div className="text-[#93000a] text-center text-sm p-3 bg-[#ffdad6] rounded-md font-bold border border-[#93000a]/20">
               {error}
             </div>
           )}
@@ -85,7 +87,7 @@ export default function Login() {
           
           <button 
             type="submit"
-            className="w-full mt-4 bg-primary text-on-primary py-3 rounded-md font-bold hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors disabled:opacity-50"
+            className="w-full mt-4 bg-primary text-on-primary py-3 rounded-md font-bold hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors disabled:opacity-50 cursor-pointer"
             disabled={isLoading}
           >
             {isLoading ? 'Signing in...' : 'Sign In'}
