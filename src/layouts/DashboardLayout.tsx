@@ -48,29 +48,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </button>
         </div>
 
-        <div className="p-6">
-          <button className="w-full bg-[#1E293B] text-white py-3 rounded-md font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-sm cursor-pointer">
-            <span className="material-symbols-outlined text-[20px]">add</span> New Application
-          </button>
-        </div>
-
-        <nav className="flex flex-col flex-1 overflow-y-auto">
-          <Link to="/admin" className={getLinkClasses('/admin')} onClick={() => setIsMobileMenuOpen(false)}>
-            <span className="material-symbols-outlined">grid_view</span> Dashboard
-          </Link>
-          {user.role === 'ADMIN' && (
+<nav className="flex flex-col flex-1 overflow-y-auto">
+          {user.role === 'ADMIN' ? (
             <>
+              <Link to="/admin" className={getLinkClasses('/admin')} onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="material-symbols-outlined">grid_view</span> Dashboard
+              </Link>
               <Link to="/admin/programs" className={getLinkClasses('/admin/programs')} onClick={() => setIsMobileMenuOpen(false)}>
                 <span className="material-symbols-outlined">package_2</span> Assistance Programs
               </Link>
               <Link to="/admin/users" className={getLinkClasses('/admin/users')} onClick={() => setIsMobileMenuOpen(false)}>
                 <span className="material-symbols-outlined">group</span> User Management
               </Link>
+              <Link to="/reports" className={getLinkClasses('/reports')} onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="material-symbols-outlined">analytics</span> Reports & Analytics
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/dashboard" className={getLinkClasses('/dashboard')} onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="material-symbols-outlined">grid_view</span> My Dashboard
+              </Link>
+              <Link to="/programs" className={getLinkClasses('/programs')} onClick={() => setIsMobileMenuOpen(false)}>
+                <span className="material-symbols-outlined">search</span> Browse Programs
+              </Link>
             </>
           )}
-          <Link to="/reports" className={getLinkClasses('/reports')} onClick={() => setIsMobileMenuOpen(false)}>
-            <span className="material-symbols-outlined">analytics</span> Reports & Analytics
-          </Link>
 
           <div className="mt-auto p-6 border-t border-slate-100">
             <button onClick={logout} className="flex items-center gap-3 text-slate-500 hover:text-red-600 font-bold transition-all cursor-pointer">
