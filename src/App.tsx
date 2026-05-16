@@ -2,15 +2,15 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './layouts/DashboardLayout';
-import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login'; 
+import AdminDashboard from './pages/AdminDashboard';
 import AdminPrograms from './pages/AdminPrograms';
 import GrantDetail from './pages/GrantDetail';
 import BeneficiaryMgmt from './pages/BeneficiaryMgmt';
 import UserDetail from './pages/UserDetail';
 import CitizenPrograms from './pages/CitizenPrograms';
 import ApplicationForm from './pages/ApplicationForm';
-import UserDashboard from './pages/UserDashboard'; // <-- IMPORTA EL NUEVO COMPONENTE
+import UserDashboard from './pages/UserDashboard';
 
 export default function App() {
   return (
@@ -18,22 +18,24 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         
-        {/* ADMIN ROUTES */}
+        {/* ROUTES FOR STAFF (ADMIN & MANAGER) */}
         <Route path="/admin" element={
-          <ProtectedRoute roleRequired="ADMIN">
+          <ProtectedRoute roleRequired={["ADMIN", "MANAGER"]}>
             <DashboardLayout><AdminDashboard /></DashboardLayout>
           </ProtectedRoute>
         } />
         <Route path="/admin/programs" element={
-          <ProtectedRoute roleRequired="ADMIN">
+          <ProtectedRoute roleRequired={["ADMIN", "MANAGER"]}>
             <DashboardLayout><AdminPrograms /></DashboardLayout>
           </ProtectedRoute>
         } />
         <Route path="/admin/programs/:id" element={
-          <ProtectedRoute roleRequired="ADMIN">
+          <ProtectedRoute roleRequired={["ADMIN", "MANAGER"]}>
             <DashboardLayout><GrantDetail /></DashboardLayout>
           </ProtectedRoute>
         } />
+
+        {/* ROUTES EXCLUSIVE FOR ADMIN */}
         <Route path="/admin/users" element={
           <ProtectedRoute roleRequired="ADMIN">
             <DashboardLayout><BeneficiaryMgmt /></DashboardLayout>
@@ -45,10 +47,10 @@ export default function App() {
           </ProtectedRoute>
         } />
 
-        {/* REGULAR USER ROUTES */}
+        {/* ROUTES FOR CITIZENS (USER) */}
         <Route path="/dashboard" element={
           <ProtectedRoute roleRequired="USER">
-            <DashboardLayout><UserDashboard /></DashboardLayout>  {/* <-- APLICA EL COMPONENTE AQUÍ */}
+            <DashboardLayout><UserDashboard /></DashboardLayout> 
           </ProtectedRoute>
         } />
         <Route path="/programs" element={

@@ -1,21 +1,27 @@
-import React, { type ReactNode } from 'react'; // Importamos ReactNode explícitamente
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
-  children: ReactNode;
-  roleRequired?: string;
-}   
+  children: React.ReactNode;
+  roleRequired: string | string[];
+}
 
 export default function ProtectedRoute({ children, roleRequired }: ProtectedRouteProps) {
   const token = localStorage.getItem('sas_token');
-  const userStr = localStorage.getItem('sas_user');
-  const user = userStr ? JSON.parse(userStr) : null;
+  const userString = localStorage.getItem('sas_user');
 
-  if (!token || !user) {
+  if (!token || !userString) {
     return <Navigate to="/login" replace />;
   }
 
-  if (roleRequired && user.role !== roleRequired) {
+  const user = JSON.parse(userString);
+  
+  // Verificamos si el rol del usuario está permitido
+  const hasRequiredRole = Array.isArray(roleRequired) 
+    ? roleRequired.includes(user.role) 
+    : user.role === roleRequired;
+
+  if (!hasRequiredRole) {
     return <Navigate to="/login" replace />;
   }
 
