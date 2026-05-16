@@ -33,7 +33,8 @@ export default function Login() {
         email: data.email
       }));
 
-      if (data.role === 'ADMIN') {
+      // AQUI ESTÁ LA CORRECCIÓN CLAVE
+      if (data.role === 'ADMIN' || data.role === 'MANAGER') {
         navigate('/admin');
       } else {
         navigate('/dashboard');
@@ -47,24 +48,27 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md bg-surface-container-lowest rounded-xl border border-outline-variant p-8 shadow-md">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-slate-50 p-4 font-['Inter',_sans-serif]">
+      <div className="w-full max-w-md bg-white rounded-md border border-slate-200 p-8 shadow-sm">
         <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-primary mb-2">SAS Assistance</h1>
-            <p className="text-on-surface-variant">Sign in to continue</p>
+            <div className="w-12 h-12 bg-[#1E293B] rounded mx-auto flex items-center justify-center mb-4">
+              <span className="material-symbols-outlined text-white text-2xl">shield</span>
+            </div>
+            <h1 className="text-2xl font-extrabold text-[#1E293B] mb-1">SAS App</h1>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Aid Management</p>
         </div>
         
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-5">
           {error && (
-            <div className="text-[#93000a] text-center text-sm p-3 bg-[#ffdad6] rounded-md font-bold border border-[#93000a]/20">
+            <div className="text-red-700 text-center text-xs font-bold p-3 bg-red-50 rounded border border-red-100">
               {error}
             </div>
           )}
           
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-on-surface">ID Number (DNI)</label>
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase">ID Number (DNI)</label>
             <input 
-                className="w-full px-4 py-2 border border-outline-variant rounded-md bg-surface focus:outline-none focus:ring-2 focus:ring-secondary transition-shadow"
+                className="w-full px-3 py-2.5 border border-slate-200 rounded outline-none text-slate-700 font-medium focus:border-teal-500 transition-colors"
                 type="text" 
                 value={dni} 
                 onChange={(e) => setDni(e.target.value)} 
@@ -73,10 +77,10 @@ export default function Login() {
             />
           </div>
           
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-on-surface">Password</label>
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase">Password</label>
             <input 
-                className="w-full px-4 py-2 border border-outline-variant rounded-md bg-surface focus:outline-none focus:ring-2 focus:ring-secondary transition-shadow"
+                className="w-full px-3 py-2.5 border border-slate-200 rounded outline-none text-slate-700 font-medium focus:border-teal-500 transition-colors"
                 type="password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
@@ -87,10 +91,10 @@ export default function Login() {
           
           <button 
             type="submit"
-            className="w-full mt-4 bg-primary text-on-primary py-3 rounded-md font-bold hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors disabled:opacity-50 cursor-pointer"
+            className="w-full mt-6 bg-[#1E293B] text-white py-2.5 rounded font-bold hover:bg-slate-800 transition-all shadow-sm disabled:opacity-50 cursor-pointer"
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
       </div>
